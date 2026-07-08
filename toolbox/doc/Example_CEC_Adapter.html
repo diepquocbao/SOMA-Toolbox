@@ -1,0 +1,169 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Connecting an external benchmark suite (IEEE CEC) to somamin</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-07-08">
+<meta name="DC.source" content="Example_CEC_Adapter.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Connecting an external benchmark suite (IEEE CEC) to somamin</h1>
+<p>Metaheuristic researchers often benchmark on the IEEE CEC single-objective suites. Those functions are distributed by the competition organizers and are NOT bundled with this toolbox. Once you have them on your path, connecting them to somamin takes a single adapter line.</p>
+<p>The CEC MEX interface expects a D-by-N matrix (columns are individuals) and returns raw objective values; somamin passes an N-by-D matrix (rows are individuals) and minimizes. The adapter transposes and subtracts the known optimum f* so that somamin minimizes the CEC "error" value:</p>
+<pre>   obj = @(POP) (cec17_func(POP.', func_num) - fstar).';</pre>
+<p>This script runs only if a CEC evaluator is visible on your path; otherwise it prints setup instructions and returns.</p>
+<pre class="codeinput">funcNum = 1;
+D = 10;
+
+<span class="keyword">if</span> exist(<span class="string">'cec17_func'</span>, <span class="string">'file'</span>) ~= 3 &amp;&amp; exist(<span class="string">'cec_eval'</span>, <span class="string">'file'</span>) ~= 2
+    fprintf([<span class="string">'CEC functions not found on the path.\n'</span> <span class="keyword">...</span>
+        <span class="string">'Download the IEEE CEC2017 suite (cec17_func + input_data) from the\n'</span> <span class="keyword">...</span>
+        <span class="string">'competition organizers, add its folder to the path, set that folder as\n'</span> <span class="keyword">...</span>
+        <span class="string">'the current directory (the MEX reads input_data/ by relative path), then\n'</span> <span class="keyword">...</span>
+        <span class="string">'re-run this example. See benchmarks/README.md in the project repo.\n'</span>]);
+    <span class="keyword">return</span>
+<span class="keyword">end</span>
+
+<span class="comment">% Prefer the project dispatcher cec_eval if present, else the raw MEX.</span>
+<span class="keyword">if</span> exist(<span class="string">'cec_eval'</span>, <span class="string">'file'</span>) == 2
+    fstar = 100 * funcNum;                      <span class="comment">% CEC2017 f* = 100*i</span>
+    obj = @(POP) (cec_eval(POP.', funcNum, 2017) - fstar).';
+<span class="keyword">else</span>
+    fstar = 100 * funcNum;
+    obj = @(POP) (cec17_func(POP.', funcNum) - fstar).';
+<span class="keyword">end</span>
+
+opts = somaoptions(<span class="string">'Variant'</span>, <span class="string">'iSOMA'</span>, <span class="string">'Seed'</span>, 1, <span class="string">'Display'</span>, <span class="string">'iter'</span>, <span class="keyword">...</span>
+    <span class="string">'UseVectorized'</span>, true, <span class="string">'MaxFunctionEvaluations'</span>, 1e4 * D);
+[x, err] = somamin(obj, D, -100, 100, opts);
+fprintf(<span class="string">'CEC2017 F%d (D=%d): final error = %.4e\n'</span>, funcNum, D, err);
+</pre>
+<pre class="codeoutput">CEC functions not found on the path.
+Download the IEEE CEC2017 suite (cec17_func + input_data) from the
+competition organizers, add its folder to the path, set that folder as
+the current directory (the MEX reads input_data/ by relative path), then
+re-run this example. See benchmarks/README.md in the project repo.
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Connecting an external benchmark suite (IEEE CEC) to somamin
+% Metaheuristic researchers often benchmark on the IEEE CEC single-objective
+% suites. Those functions are distributed by the competition organizers and are
+% NOT bundled with this toolbox. Once you have them on your path, connecting them
+% to somamin takes a single adapter line.
+%
+% The CEC MEX interface expects a D-by-N matrix (columns are individuals) and
+% returns raw objective values; somamin passes an N-by-D matrix (rows are
+% individuals) and minimizes. The adapter transposes and subtracts the known
+% optimum f* so that somamin minimizes the CEC "error" value:
+%
+%     obj = @(POP) (cec17_func(POP.', func_num) - fstar).';
+%
+% This script runs only if a CEC evaluator is visible on your path; otherwise it
+% prints setup instructions and returns.
+
+funcNum = 1;
+D = 10;
+
+if exist('cec17_func', 'file') ~= 3 && exist('cec_eval', 'file') ~= 2
+    fprintf(['CEC functions not found on the path.\n' ...
+        'Download the IEEE CEC2017 suite (cec17_func + input_data) from the\n' ...
+        'competition organizers, add its folder to the path, set that folder as\n' ...
+        'the current directory (the MEX reads input_data/ by relative path), then\n' ...
+        're-run this example. See benchmarks/README.md in the project repo.\n']);
+    return
+end
+
+% Prefer the project dispatcher cec_eval if present, else the raw MEX.
+if exist('cec_eval', 'file') == 2
+    fstar = 100 * funcNum;                      % CEC2017 f* = 100*i
+    obj = @(POP) (cec_eval(POP.', funcNum, 2017) - fstar).';
+else
+    fstar = 100 * funcNum;
+    obj = @(POP) (cec17_func(POP.', funcNum) - fstar).';
+end
+
+opts = somaoptions('Variant', 'iSOMA', 'Seed', 1, 'Display', 'iter', ...
+    'UseVectorized', true, 'MaxFunctionEvaluations', 1e4 * D);
+[x, err] = somamin(obj, D, -100, 100, opts);
+fprintf('CEC2017 F%d (D=%d): final error = %.4e\n', funcNum, D, err);
+
+##### SOURCE END #####
+-->
+</body>
+</html>

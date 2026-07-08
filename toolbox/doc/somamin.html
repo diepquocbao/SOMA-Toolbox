@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>somamin</title><style>body{font-family:Arial,Helvetica,sans-serif;margin:2em auto;max-width:52em;padding:0 1em;color:#222}h1{color:#0076a8;border-bottom:2px solid #0076a8;padding-bottom:0.2em}pre{font-family:Consolas,Monaco,monospace;background:#f4f4f4;padding:1em;line-height:1.4;overflow-x:auto}</style></head><body><h1>somamin</h1><pre> SOMAMIN Minimize a function using the Self-Organizing Migrating Algorithm family.
+    X = SOMAMIN(FUN, NVARS, LB, UB) minimizes FUN over the box LB &lt;= x &lt;= UB
+    using the default variant (classical SOMA AllToOne). FUN accepts a
+    1-by-NVARS row vector and returns a scalar. LB and UB are finite scalars
+    or 1-by-NVARS vectors (SOMA requires a bounded search space).
+ 
+    X = somamin(FUN, NVARS, LB, UB, OPTIONS) uses settings created with
+    SOMAOPTIONS, e.g. somaoptions('Variant',"T3A"). Available variants:
+    AllToOne, AllToAll, AllToAllAdaptive, AllToRand (Zelinka, 2004),
+    T3A (Diep, IEEE CEC 2019), Pareto (Diep, Zelinka, Das, MENDEL 2019),
+    iSOMA (Diep, Truong, Das, Zelinka, Applied Soft Computing, 2022).
+    Each implementation follows its original paper; defaults are the
+    published parameter values.
+ 
+    X = somamin(PROBLEM) uses a struct with fields: objective, nvars, lb, ub,
+    and (optionally) options.
+ 
+    [X, FVAL] = somamin(...) also returns the objective value at X.
+ 
+    [X, FVAL, EXITFLAG, OUTPUT] = somamin(...) returns an exit code and an
+    information struct. EXITFLAG:
+       1  ObjectiveLimit reached (or degenerate bounds lb == ub)
+       0  budget exhausted (MaxFunctionEvaluations or MaxMigrations)
+       3  no improvement for MaxStallMigrations migrations
+      -1  stopped by OutputFcn/PlotFcn
+    OUTPUT fields: variant, migrations, funccount, message, rngstate,
+    bestfvalhistory (when options.RecordHistory is true).
+ 
+    Example:
+      opts = somaoptions('Variant','AllToOne', 'Seed',1, 'Display','iter');
+      [x, fval] = somamin(@(x) sum(x.^2), 5, -100, 100, opts);
+ 
+    See also SOMAOPTIONS, SOMAPLOTBESTF.
+</pre><p><a href="index.html">Back to SOMA Toolbox overview</a></p></body></html>

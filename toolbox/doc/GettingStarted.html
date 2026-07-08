@@ -1,0 +1,447 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Getting Started with the SOMA Toolbox</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-07-08">
+<meta name="DC.source" content="GettingStarted.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Getting Started with the SOMA Toolbox</h1>
+<!--introduction-->
+<p>This script introduces the SOMA Toolbox: a unified interface to the family of Self-Organizing Migrating Algorithms. It requires only base MATLAB.</p>
+<p>Run it section by section (Ctrl+Enter) or all at once.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">1. The simplest call</a>
+</li>
+<li>
+<a href="#2">2. Getting more information back</a>
+</li>
+<li>
+<a href="#3">3. Choosing a variant and options with somaoptions</a>
+</li>
+<li>
+<a href="#4">4. Reproducibility</a>
+</li>
+<li>
+<a href="#5">5. Vectorized objectives are much faster</a>
+</li>
+<li>
+<a href="#6">6. A harder function: Rastrigin</a>
+</li>
+<li>
+<a href="#7">Next steps</a>
+</li>
+</ul>
+</div>
+<h2 id="1">1. The simplest call</h2>
+<p>Minimize the sphere function in 5 dimensions over the box [-100, 100]. FUN receives a 1-by-nvars row vector and returns a scalar.</p>
+<pre class="codeinput">rng(0);
+fun   = @(x) sum(x.^2);
+nvars = 5;
+lb    = -100;
+ub    =  100;
+
+x = somamin(fun, nvars, lb, ub);
+fprintf(<span class="string">'Best point found (first 3 coords): [%.3g %.3g %.3g ...]\n'</span>, x(1), x(2), x(3));
+</pre>
+<pre class="codeoutput">soma (AllToOne): Maximum number of function evaluations reached. Migrations: 62, function evaluations: 49982, best f(x): 3.34366e-17
+Best point found (first 3 coords): [-4.4e-10 -1.81e-09 -1.27e-09 ...]
+</pre>
+<img vspace="5" hspace="5" src="GettingStarted_01.png" alt=""> <h2 id="2">2. Getting more information back</h2>
+<p>soma follows the Global Optimization Toolbox calling convention: [x, fval, exitflag, output] = somamin(...)</p>
+<pre class="codeinput">[x, fval, exitflag, output] = somamin(fun, nvars, lb, ub);
+fprintf(<span class="string">'fval = %.4g, exitflag = %d\n'</span>, fval, exitflag);
+fprintf(<span class="string">'variant = %s, migrations = %d, funccount = %d\n'</span>, <span class="keyword">...</span>
+    output.variant, output.migrations, output.funccount);
+</pre>
+<pre class="codeoutput">soma (AllToOne): Maximum number of function evaluations reached. Migrations: 62, function evaluations: 49982, best f(x): 4.10716e-17
+fval = 4.107e-17, exitflag = 0
+variant = AllToOne, migrations = 62, funccount = 49982
+</pre>
+<h2 id="3">3. Choosing a variant and options with somaoptions</h2>
+<p>Pick any of: AllToOne (default), AllToAll, AllToAllAdaptive, AllToRand, T3A, Pareto, iSOMA. Defaults are the values published for each variant.</p>
+<pre class="codeinput">opts = somaoptions(<span class="string">'Variant'</span>, <span class="string">'T3A'</span>, <span class="string">'Display'</span>, <span class="string">'iter'</span>, <span class="string">'Seed'</span>, 1, <span class="keyword">...</span>
+    <span class="string">'MaxFunctionEvaluations'</span>, 3e4);
+[x, fval] = somamin(fun, nvars, lb, ub, opts);
+fprintf(<span class="string">'T3A best fval = %.4g\n'</span>, fval);
+</pre>
+<pre class="codeoutput"> Migration      f-count        Best f(x)
+         0           30          4723.65
+         1          165          4390.01
+         2          345          2275.14
+         3          525          2170.52
+         4          705          2035.48
+         5          885          1873.26
+         6         1065          1527.99
+         7         1245          391.181
+         8         1425          391.181
+         9         1605          291.778
+        10         1785          274.734
+        11         1920          274.734
+        12         2100          274.734
+        13         2235          137.018
+        14         2370          137.018
+        15         2550          131.968
+        16         2730          129.157
+        17         2910          78.1328
+        18         3090          27.4484
+        19         3270          27.4484
+        20         3450          27.4484
+        21         3585          27.4484
+        22         3765          13.9063
+        23         3945          10.7934
+        24         4125          3.15887
+        25         4260          3.15887
+        26         4440          3.15887
+        27         4575          1.88572
+        28         4755          1.88572
+        29         4935           1.3976
+        30         5115           1.3976
+        31         5295          1.29748
+        32         5475          1.24874
+        33         5655         0.397841
+        34         5790         0.397841
+        35         5970         0.344938
+        36         6150         0.267559
+        37         6330         0.267559
+        38         6510         0.267559
+        39         6645         0.203296
+        40         6825        0.0912482
+        41         7005        0.0912482
+        42         7185        0.0912482
+        43         7365         0.019171
+        44         7545         0.019171
+        45         7680        0.0169156
+        46         7815        0.0169156
+        47         7995        0.0169156
+        48         8130       0.00256449
+        49         8310       0.00256449
+        50         8490       0.00256449
+        51         8670       0.00256449
+        52         8805       0.00256449
+        53         8985       0.00238251
+        54         9120       0.00238251
+        55         9300       0.00238251
+        56         9480       0.00082559
+        57         9660       0.00082559
+        58         9795      0.000743954
+        59         9930      0.000743954
+        60        10110      0.000743954
+        61        10290      0.000414317
+        62        10470      0.000146969
+        63        10605      0.000146969
+        64        10785      0.000146969
+        65        10920      0.000122855
+        66        11100      3.84958e-05
+        67        11235      1.83481e-05
+        68        11370      1.83481e-05
+        69        11460      1.58624e-05
+        70        11595      1.40016e-05
+        71        11775      5.77424e-06
+        72        11955      5.77424e-06
+        73        12135      1.87067e-06
+        74        12315      1.11887e-06
+        75        12405      1.11887e-06
+        76        12585      5.99169e-07
+        77        12765      4.77982e-07
+        78        12945       6.7157e-08
+        79        13125      4.28096e-09
+        80        13305      4.28096e-09
+        81        13485      4.28096e-09
+        82        13665      4.28096e-09
+        83        13845      4.28096e-09
+        84        14025      4.28096e-09
+        85        14160      3.17508e-09
+        86        14295      2.46361e-09
+        87        14475      2.12774e-09
+        88        14655       7.5857e-10
+        89        14790       7.5857e-10
+        90        14970       4.7407e-10
+        91        15105       4.7407e-10
+        92        15285       4.7407e-10
+        93        15465      1.56707e-10
+        94        15645      1.27132e-10
+        95        15780      4.67821e-11
+        96        15960      2.21436e-11
+        97        16140      2.21436e-11
+        98        16320      1.02234e-11
+        99        16500      6.32113e-12
+       100        16680       6.1272e-12
+       101        16860      4.37974e-12
+       102        17040      2.78673e-12
+       103        17220      1.50431e-12
+       104        17400      7.31225e-13
+       105        17580      2.14143e-13
+       106        17760      2.14143e-13
+       107        17940       6.3917e-14
+       108        18030       6.3917e-14
+       109        18165       5.4419e-14
+       110        18345       5.4419e-14
+       111        18480       5.4419e-14
+       112        18570       5.4419e-14
+       113        18750      1.26704e-14
+       114        18930      1.26704e-14
+       115        19065      1.08796e-14
+       116        19245      1.08796e-14
+       117        19425      1.08796e-14
+       118        19605      3.77406e-16
+       119        19785      3.77406e-16
+       120        19920      3.77406e-16
+       121        20055      1.88486e-16
+       122        20190      8.84513e-17
+       123        20325      8.84513e-17
+       124        20505      3.85579e-17
+       125        20640      3.85579e-17
+       126        20775      1.97249e-17
+       127        20955       2.1326e-18
+       128        21135      1.33684e-18
+       129        21315      4.25936e-19
+       130        21450      2.57915e-19
+       131        21585      2.57915e-19
+       132        21765      2.57915e-19
+       133        21945       2.5775e-19
+       134        22080      1.72114e-19
+       135        22260      1.67139e-19
+       136        22395      1.17668e-20
+       137        22575      1.17668e-20
+       138        22755      1.10377e-20
+       139        22935      1.10377e-20
+       140        23115      1.10377e-20
+       141        23250      1.03853e-20
+       142        23430      7.79621e-21
+       143        23610      3.65163e-21
+       144        23790      8.80518e-22
+       145        23925      8.80518e-22
+       146        24105      3.54881e-22
+       147        24285      7.10614e-23
+       148        24465      5.57546e-23
+       149        24645      5.09433e-23
+       150        24780      4.64742e-23
+       151        24960      5.09585e-24
+       152        25140      5.09585e-24
+       153        25320      3.27138e-24
+       154        25500      3.27138e-24
+       155        25680      2.67782e-24
+       156        25860      7.71452e-25
+       157        25995      7.19626e-25
+       158        26175      7.19626e-25
+       159        26355      6.91767e-25
+       160        26535      2.14051e-25
+       161        26715      1.57535e-25
+       162        26850      1.27348e-25
+       163        27030      6.01955e-26
+       164        27210      2.18597e-26
+       165        27345       1.8381e-26
+       166        27525      1.63453e-26
+       167        27705      6.23363e-27
+       168        27840      6.22677e-27
+       169        27975      4.76375e-27
+       170        28155      1.82811e-27
+       171        28335      1.82811e-27
+       172        28515      2.48587e-28
+       173        28695      2.48587e-28
+       174        28875      1.48875e-28
+       175        29055      4.28971e-29
+       176        29190      3.74986e-29
+       177        29370      2.57377e-29
+       178        29550      2.14127e-29
+       179        29685       1.1835e-29
+       180        29865      5.17122e-30
+       181        29955      4.70546e-30
+       182        30000      4.70546e-30
+soma (T3A): Maximum number of function evaluations reached. Migrations: 182, function evaluations: 30000, best f(x): 4.70546e-30
+T3A best fval = 4.705e-30
+</pre>
+<h2 id="4">4. Reproducibility</h2>
+<p>Set a Seed for bit-exact repeatability. Two runs with the same seed match.</p>
+<pre class="codeinput">opts = somaoptions(<span class="string">'Variant'</span>, <span class="string">'Pareto'</span>, <span class="string">'Seed'</span>, 42, <span class="string">'Display'</span>, <span class="string">'off'</span>);
+[~, f1] = somamin(fun, nvars, lb, ub, opts);
+[~, f2] = somamin(fun, nvars, lb, ub, opts);
+fprintf(<span class="string">'Two seeded runs identical: %d (f1=%.6g, f2=%.6g)\n'</span>, isequal(f1, f2), f1, f2);
+</pre>
+<pre class="codeoutput">Two seeded runs identical: 1 (f1=4.11401e-129, f2=4.11401e-129)
+</pre>
+<h2 id="5">5. Vectorized objectives are much faster</h2>
+<p>If your objective can score a whole population at once (an N-by-nvars matrix returning an N-by-1 column), set UseVectorized = true.</p>
+<pre class="codeinput">funVec = @(X) sum(X.^2, 2);
+opts = somaoptions(<span class="string">'Variant'</span>, <span class="string">'iSOMA'</span>, <span class="string">'UseVectorized'</span>, true, <span class="string">'Seed'</span>, 7, <span class="keyword">...</span>
+    <span class="string">'MaxFunctionEvaluations'</span>, 5e4, <span class="string">'Display'</span>, <span class="string">'off'</span>);
+tic;
+[~, fval] = somamin(funVec, 30, -100, 100, opts);
+fprintf(<span class="string">'iSOMA on 30-D sphere: fval = %.4g (%.2f s)\n'</span>, fval, toc);
+</pre>
+<pre class="codeoutput">iSOMA on 30-D sphere: fval = 6.607e-09 (0.24 s)
+</pre>
+<h2 id="6">6. A harder function: Rastrigin</h2>
+<p>A highly multimodal benchmark. Compare two variants on the same budget.</p>
+<pre class="codeinput">rastrigin = @(X) sum(X.^2 - 10*cos(2*pi*X) + 10, 2);
+<span class="keyword">for</span> v = [<span class="string">"AllToOne"</span>, <span class="string">"iSOMA"</span>]
+    opts = somaoptions(<span class="string">'Variant'</span>, v, <span class="string">'UseVectorized'</span>, true, <span class="string">'Seed'</span>, 3, <span class="keyword">...</span>
+        <span class="string">'MaxFunctionEvaluations'</span>, 5e4, <span class="string">'Display'</span>, <span class="string">'off'</span>);
+    [~, fval] = somamin(rastrigin, 10, -5.12, 5.12, opts);
+    fprintf(<span class="string">'%-10s Rastrigin(10-D) fval = %.4g\n'</span>, v, fval);
+<span class="keyword">end</span>
+</pre>
+<pre class="codeoutput">AllToOne   Rastrigin(10-D) fval = 6.609e-07
+iSOMA      Rastrigin(10-D) fval = 1.99
+</pre>
+<h2 id="7">Next steps</h2>
+<div>
+<ul>
+<li>Example_PID_Tuning.m - tune a PID controller (an engineering problem)</li>
+<li>Example_PressureVessel.m - a constrained engineering design problem</li>
+<li>help soma / help somaoptions - full documentation</li>
+</ul>
+</div>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Getting Started with the SOMA Toolbox
+% This script introduces the SOMA Toolbox: a unified interface to the family
+% of Self-Organizing Migrating Algorithms. It requires only base MATLAB.
+%
+% Run it section by section (Ctrl+Enter) or all at once.
+
+%% 1. The simplest call
+% Minimize the sphere function in 5 dimensions over the box [-100, 100].
+% FUN receives a 1-by-nvars row vector and returns a scalar.
+rng(0);
+fun   = @(x) sum(x.^2);
+nvars = 5;
+lb    = -100;
+ub    =  100;
+
+x = somamin(fun, nvars, lb, ub);
+fprintf('Best point found (first 3 coords): [%.3g %.3g %.3g ...]\n', x(1), x(2), x(3));
+
+%% 2. Getting more information back
+% soma follows the Global Optimization Toolbox calling convention:
+%   [x, fval, exitflag, output] = somamin(...)
+[x, fval, exitflag, output] = somamin(fun, nvars, lb, ub);
+fprintf('fval = %.4g, exitflag = %d\n', fval, exitflag);
+fprintf('variant = %s, migrations = %d, funccount = %d\n', ...
+    output.variant, output.migrations, output.funccount);
+
+%% 3. Choosing a variant and options with somaoptions
+% Pick any of: AllToOne (default), AllToAll, AllToAllAdaptive, AllToRand,
+% T3A, Pareto, iSOMA. Defaults are the values published for each variant.
+opts = somaoptions('Variant', 'T3A', 'Display', 'iter', 'Seed', 1, ...
+    'MaxFunctionEvaluations', 3e4);
+[x, fval] = somamin(fun, nvars, lb, ub, opts);
+fprintf('T3A best fval = %.4g\n', fval);
+
+%% 4. Reproducibility
+% Set a Seed for bit-exact repeatability. Two runs with the same seed match.
+opts = somaoptions('Variant', 'Pareto', 'Seed', 42, 'Display', 'off');
+[~, f1] = somamin(fun, nvars, lb, ub, opts);
+[~, f2] = somamin(fun, nvars, lb, ub, opts);
+fprintf('Two seeded runs identical: %d (f1=%.6g, f2=%.6g)\n', isequal(f1, f2), f1, f2);
+
+%% 5. Vectorized objectives are much faster
+% If your objective can score a whole population at once (an N-by-nvars matrix
+% returning an N-by-1 column), set UseVectorized = true.
+funVec = @(X) sum(X.^2, 2);
+opts = somaoptions('Variant', 'iSOMA', 'UseVectorized', true, 'Seed', 7, ...
+    'MaxFunctionEvaluations', 5e4, 'Display', 'off');
+tic;
+[~, fval] = somamin(funVec, 30, -100, 100, opts);
+fprintf('iSOMA on 30-D sphere: fval = %.4g (%.2f s)\n', fval, toc);
+
+%% 6. A harder function: Rastrigin
+% A highly multimodal benchmark. Compare two variants on the same budget.
+rastrigin = @(X) sum(X.^2 - 10*cos(2*pi*X) + 10, 2);
+for v = ["AllToOne", "iSOMA"]
+    opts = somaoptions('Variant', v, 'UseVectorized', true, 'Seed', 3, ...
+        'MaxFunctionEvaluations', 5e4, 'Display', 'off');
+    [~, fval] = somamin(rastrigin, 10, -5.12, 5.12, opts);
+    fprintf('%-10s Rastrigin(10-D) fval = %.4g\n', v, fval);
+end
+
+%% Next steps
+% * Example_PID_Tuning.m       - tune a PID controller (an engineering problem)
+% * Example_PressureVessel.m   - a constrained engineering design problem
+% * help soma / help somaoptions - full documentation
+
+##### SOURCE END #####
+-->
+</body>
+</html>

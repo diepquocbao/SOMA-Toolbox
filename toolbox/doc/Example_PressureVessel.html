@@ -1,0 +1,271 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      -->
+<title>Engineering example: pressure vessel design with SOMA</title>
+<meta name="generator" content="MATLAB 25.2">
+<link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
+<meta name="DC.date" content="2026-07-08">
+<meta name="DC.source" content="Example_PressureVessel.m">
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style>
+</head>
+<body>
+<div class="content">
+<h1>Engineering example: pressure vessel design with SOMA</h1>
+<!--introduction-->
+<p>The classic pressure vessel design problem minimizes the fabrication cost (material, forming, welding) of a cylindrical vessel with hemispherical heads, subject to four design constraints. It is a standard constrained benchmark; SOMA is a bound-constrained optimizer, so the constraints are handled with a static exterior penalty.</p>
+<p>Variables: x1 = Ts, shell thickness x2 = Th, head thickness x3 = R, inner radius x4 = L, cylindrical length Best-known cost (with Ts, Th as multiples of 0.0625"): ~6059.71.</p>
+<p>Uses only base MATLAB.</p>
+<!--/introduction-->
+<h2>Contents</h2>
+<div>
+<ul>
+<li>
+<a href="#1">Problem setup</a>
+</li>
+<li>
+<a href="#2">Optimize</a>
+</li>
+<li>
+<a href="#3">Report the best design</a>
+</li>
+<li>
+<a href="#4">------------------------------------------------------------------------</a>
+</li>
+</ul>
+</div>
+<h2 id="1">Problem setup</h2>
+<pre class="codeinput">nvars = 4;
+lb = [0.0625, 0.0625,  10,  10];
+ub = [6.1875, 6.1875, 200, 200];
+
+penalty = 1e7;                        <span class="comment">% static penalty weight</span>
+objective = @(x) pressureVesselCost(x, penalty);
+</pre>
+<h2 id="2">Optimize</h2>
+<p>Averaging several seeds gives a stable picture of a stochastic optimizer.</p>
+<pre class="codeinput">nRuns = 10;
+best = struct(<span class="string">'cost'</span>, Inf, <span class="string">'x'</span>, []);
+costs = zeros(nRuns, 1);
+<span class="keyword">for</span> run = 1:nRuns
+    opts = somaoptions(<span class="string">'Variant'</span>, <span class="string">'iSOMA'</span>, <span class="string">'Seed'</span>, run, <span class="keyword">...</span>
+        <span class="string">'MaxFunctionEvaluations'</span>, 2e4, <span class="string">'Display'</span>, <span class="string">'off'</span>);
+    [x, f] = somamin(objective, nvars, lb, ub, opts);
+    costs(run) = f;
+    <span class="keyword">if</span> f &lt; best.cost
+        best.cost = f;
+        best.x = x;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+fprintf(<span class="string">'Penalized cost over %d runs: best = %.2f, mean = %.2f, std = %.2f\n'</span>, <span class="keyword">...</span>
+    nRuns, min(costs), mean(costs), std(costs));
+</pre>
+<h2 id="3">Report the best design</h2>
+<pre class="codeinput">x = best.x;
+[trueCost, g] = pressureVesselRaw(x);
+fprintf(<span class="string">'\nBest design:\n'</span>);
+fprintf(<span class="string">'  Ts = %.4f in, Th = %.4f in, R = %.4f in, L = %.4f in\n'</span>, x(1), x(2), x(3), x(4));
+fprintf(<span class="string">'  Fabrication cost = %.2f\n'</span>, trueCost);
+fprintf(<span class="string">'  Constraints g1..g4 (feasible if &lt;= 0): %s\n'</span>, mat2str(g, 4));
+fprintf(<span class="string">'  Feasible: %d\n'</span>, all(g &lt;= 1e-6));
+
+<span class="comment">% For comparison, the discrete-thickness convention rounds Ts, Th to the</span>
+<span class="comment">% nearest multiple of 0.0625" (available plate thicknesses).</span>
+xd = x;
+xd(1:2) = round(xd(1:2) / 0.0625) * 0.0625;
+[costD, gD] = pressureVesselRaw(xd);
+fprintf(<span class="string">'\nWith plate thicknesses rounded to 0.0625" multiples:\n'</span>);
+fprintf(<span class="string">'  Ts = %.4f, Th = %.4f -&gt; cost = %.2f, feasible = %d\n'</span>, <span class="keyword">...</span>
+    xd(1), xd(2), costD, all(gD &lt;= 1e-6));
+</pre>
+<pre class="codeoutput">
+Best design:
+  Ts = 0.8388 in, Th = 0.4161 in, R = 43.4835 in, L = 160.1986 in
+  Fabrication cost = 5999.71
+  Constraints g1..g4 (feasible if &lt;= 0): [0.0003964;-0.00125;-5.815;-79.8]
+  Feasible: 0
+
+With plate thicknesses rounded to 0.0625" multiples:
+  Ts = 0.8125, Th = 0.4375 -&gt; cost = 5897.96, feasible = 0
+</pre>
+<h2 id="4">------------------------------------------------------------------------</h2>
+<p>Local functions -------------------------------------------------------------------------</p>
+<pre class="codeinput">
+<span class="keyword">function</span> J = pressureVesselCost(x, penalty)
+<span class="comment">% Penalized objective: fabrication cost plus squared constraint violations.</span>
+[cost, g] = pressureVesselRaw(x);
+viol = max(0, g);
+J = cost + penalty * sum(viol.^2);
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> [cost, g] = pressureVesselRaw(x)
+<span class="comment">% Raw fabrication cost and constraint values g (feasible when g &lt;= 0).</span>
+Ts = x(1); Th = x(2); R = x(3); L = x(4);
+cost = 0.6224*Ts*R*L + 1.7781*Th*R^2 + 3.1661*Ts^2*L + 19.84*Ts^2*R;
+g = [ <span class="keyword">...</span>
+    -Ts + 0.0193*R; <span class="keyword">...</span>
+    -Th + 0.00954*R; <span class="keyword">...</span>
+    -pi*R^2*L - (4/3)*pi*R^3 + 1296000; <span class="keyword">...</span>
+     L - 240];
+<span class="keyword">end</span>
+</pre>
+<pre class="codeoutput">Penalized cost over 10 runs: best = 6001.28, mean = 6176.82, std = 126.62
+</pre>
+<p class="footer">
+<br>
+<a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2025b</a>
+<br>
+</p>
+</div>
+<!--
+##### SOURCE BEGIN #####
+%% Engineering example: pressure vessel design with SOMA
+% The classic pressure vessel design problem minimizes the fabrication cost
+% (material, forming, welding) of a cylindrical vessel with hemispherical
+% heads, subject to four design constraints. It is a standard constrained
+% benchmark; SOMA is a bound-constrained optimizer, so the constraints are
+% handled with a static exterior penalty.
+%
+% Variables:
+%   x1 = Ts, shell thickness      x2 = Th, head thickness
+%   x3 = R,  inner radius         x4 = L,  cylindrical length
+% Best-known cost (with Ts, Th as multiples of 0.0625"): ~6059.71.
+%
+% Uses only base MATLAB.
+
+%% Problem setup
+nvars = 4;
+lb = [0.0625, 0.0625,  10,  10];
+ub = [6.1875, 6.1875, 200, 200];
+
+penalty = 1e7;                        % static penalty weight
+objective = @(x) pressureVesselCost(x, penalty);
+
+%% Optimize
+% Averaging several seeds gives a stable picture of a stochastic optimizer.
+nRuns = 10;
+best = struct('cost', Inf, 'x', []);
+costs = zeros(nRuns, 1);
+for run = 1:nRuns
+    opts = somaoptions('Variant', 'iSOMA', 'Seed', run, ...
+        'MaxFunctionEvaluations', 2e4, 'Display', 'off');
+    [x, f] = somamin(objective, nvars, lb, ub, opts);
+    costs(run) = f;
+    if f < best.cost
+        best.cost = f;
+        best.x = x;
+    end
+end
+
+fprintf('Penalized cost over %d runs: best = %.2f, mean = %.2f, std = %.2f\n', ...
+    nRuns, min(costs), mean(costs), std(costs));
+
+%% Report the best design
+x = best.x;
+[trueCost, g] = pressureVesselRaw(x);
+fprintf('\nBest design:\n');
+fprintf('  Ts = %.4f in, Th = %.4f in, R = %.4f in, L = %.4f in\n', x(1), x(2), x(3), x(4));
+fprintf('  Fabrication cost = %.2f\n', trueCost);
+fprintf('  Constraints g1..g4 (feasible if <= 0): %s\n', mat2str(g, 4));
+fprintf('  Feasible: %d\n', all(g <= 1e-6));
+
+% For comparison, the discrete-thickness convention rounds Ts, Th to the
+% nearest multiple of 0.0625" (available plate thicknesses).
+xd = x;
+xd(1:2) = round(xd(1:2) / 0.0625) * 0.0625;
+[costD, gD] = pressureVesselRaw(xd);
+fprintf('\nWith plate thicknesses rounded to 0.0625" multiples:\n');
+fprintf('  Ts = %.4f, Th = %.4f -> cost = %.2f, feasible = %d\n', ...
+    xd(1), xd(2), costD, all(gD <= 1e-6));
+
+%% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH
+% Local functions
+% REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-
+function J = pressureVesselCost(x, penalty)
+% Penalized objective: fabrication cost plus squared constraint violations.
+[cost, g] = pressureVesselRaw(x);
+viol = max(0, g);
+J = cost + penalty * sum(viol.^2);
+end
+
+function [cost, g] = pressureVesselRaw(x)
+% Raw fabrication cost and constraint values g (feasible when g <= 0).
+Ts = x(1); Th = x(2); R = x(3); L = x(4);
+cost = 0.6224*Ts*R*L + 1.7781*Th*R^2 + 3.1661*Ts^2*L + 19.84*Ts^2*R;
+g = [ ...
+    -Ts + 0.0193*R; ...
+    -Th + 0.00954*R; ...
+    -pi*R^2*L - (4/3)*pi*R^3 + 1296000; ...
+     L - 240];
+end
+
+##### SOURCE END #####
+-->
+</body>
+</html>

@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: >-
+  If you use the SOMA Toolbox in your research, please cite it as below, and
+  also cite the original paper of the specific SOMA variant you used (see
+  README.md).
+title: "SOMA Toolbox: an open-source MATLAB toolbox for the family of Self-Organizing Migrating Algorithms"
+type: software
+authors:
+  - family-names: Diep
+    given-names: Quoc Bao
+    orcid: "https://orcid.org/0000-0003-4050-648X"
+    email: bao.dq@vlu.edu.vn
+    affiliation: >-
+      Computational Science and Applications Research Group, Faculty of
+      Mechanical, Electrical, and Computer Engineering, Van Lang School of
+      Technology, Van Lang University, Ho Chi Minh City, Vietnam
+version: 0.3.0-dev
+date-released: ""   # TODO: set at v1.0.0 release
+license: MIT
+repository-code: "https://github.com/diepquocbao/SOMA-Toolbox"

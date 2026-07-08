@@ -1,0 +1,6 @@
+* text=auto
+*.mlx binary
+*.png binary
+*.zap binary
+*.bolt binary
+*.mltbx binary

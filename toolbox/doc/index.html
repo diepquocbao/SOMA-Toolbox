@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SOMA Toolbox</title>
+<style>
+body { font-family: Arial, Helvetica, sans-serif; margin: 2em auto; max-width: 52em;
+       line-height: 1.5; color: #222; padding: 0 1em; }
+h1 { border-bottom: 2px solid #0076a8; padding-bottom: 0.2em; }
+h2 { color: #0076a8; margin-top: 1.6em; }
+code, pre { font-family: Consolas, Monaco, monospace; background: #f4f4f4; }
+pre { padding: 0.8em; border-left: 3px solid #0076a8; overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #ccc; padding: 0.4em 0.6em; text-align: left; }
+th { background: #eef6fa; }
+</style>
+</head>
+<body>
+
+<h1>SOMA Toolbox</h1>
+
+<p>An open-source MATLAB toolbox for the family of
+<b>Self-Organizing Migrating Algorithms (SOMA)</b> &mdash; one unified
+interface, in the style of the MATLAB Global Optimization Toolbox, for the
+classical variants and the modern variants by the original authors. Requires
+base MATLAB only (R2021a or newer); no additional toolboxes.</p>
+
+<h2>Quick start</h2>
+<pre>opts = somaoptions('Variant','AllToOne', 'Seed',1);
+[x, fval] = somamin(@(x) sum(x.^2), 10, -100, 100, opts)</pre>
+<p>See <a href="GettingStarted.html">Getting Started with the SOMA Toolbox</a>
+for a guided tour.</p>
+
+<h2 id="functions">Functions</h2>
+<table>
+<tr><th>Function</th><th>Purpose</th></tr>
+<tr><td><a href="somamin.html"><code>somamin</code></a></td>
+    <td>Minimize a function with a SOMA variant
+        (<code>[x,fval,exitflag,output] = somamin(fun,nvars,lb,ub,options)</code>)</td></tr>
+<tr><td><a href="somaoptions.html"><code>somaoptions</code></a></td>
+    <td>Create or modify a SOMA options structure; select the variant and its parameters</td></tr>
+<tr><td><a href="somaplotbestf.html"><code>somaplotbestf</code></a></td>
+    <td>Built-in plot function: best objective value versus migration</td></tr>
+</table>
+
+<h2>Variants</h2>
+<table>
+<tr><th><code>options.Variant</code></th><th>Reference to cite</th></tr>
+<tr><td><code>AllToOne</code>, <code>AllToAll</code>,
+        <code>AllToAllAdaptive</code>, <code>AllToRand</code></td>
+    <td>I. Zelinka, &ldquo;SOMA &mdash; Self-Organizing Migrating Algorithm&rdquo;, in
+        <i>New Optimization Techniques in Engineering</i>, Springer, 2004, pp. 167&ndash;217.
+        <a href="https://doi.org/10.1007/978-3-540-39930-8_7">doi:10.1007/978-3-540-39930-8_7</a></td></tr>
+<tr><td><code>T3A</code></td>
+    <td>Q. B. Diep, &ldquo;Self-Organizing Migrating Algorithm Team To Team Adaptive &mdash;
+        SOMA T3A&rdquo;, <i>IEEE CEC 2019</i>, pp. 1182&ndash;1187.
+        <a href="https://doi.org/10.1109/CEC.2019.8790202">doi:10.1109/CEC.2019.8790202</a></td></tr>
+<tr><td><code>Pareto</code></td>
+    <td>Q. B. Diep, I. Zelinka, S. Das, &ldquo;Self-Organizing Migrating Algorithm
+        Pareto&rdquo;, <i>MENDEL</i> 25(1):111&ndash;120, 2019.
+        <a href="https://doi.org/10.13164/mendel.2019.1.111">doi:10.13164/mendel.2019.1.111</a></td></tr>
+<tr><td><code>iSOMA</code></td>
+    <td>Q. B. Diep, T. C. Truong, S. Das, I. Zelinka, &ldquo;Self-Organizing Migrating
+        Algorithm with narrowing search space strategy for robot path planning&rdquo;,
+        <i>Applied Soft Computing</i> 116:108270, 2022.
+        <a href="https://doi.org/10.1016/j.asoc.2021.108270">doi:10.1016/j.asoc.2021.108270</a></td></tr>
+</table>
+<p>Defaults for every variant are the parameter values published in its
+reference. Any deliberate difference from the source paper is documented in
+<code>DEVIATIONS.md</code> in the repository.</p>
+
+<h2 id="examples">Examples</h2>
+<ul>
+<li><a href="GettingStarted.html">Getting started</a> &mdash; basic calls, variants,
+    reproducibility, vectorized objectives</li>
+<li><a href="Example_PID_Tuning.html">PID controller tuning</a> &mdash; an
+    engineering application using a self-contained RK4 closed-loop simulation</li>
+<li><a href="Example_PressureVessel.html">Pressure vessel design</a> &mdash; a
+    classical constrained design problem via static penalty</li>
+<li><a href="Example_CEC_Adapter.html">CEC benchmark adapter</a> &mdash; how to run
+    SOMA variants on the CEC test suites (user-supplied benchmark code)</li>
+</ul>
+
+<h2>Citation</h2>
+<p>If you use the SOMA Toolbox in your work, please cite the paper of the
+variant you used (table above). Released under the MIT license.</p>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<toc version="2.0">
+    <tocitem target="index.html">SOMA Toolbox
+        <tocitem target="GettingStarted.html"
+                 image="HelpIcon.GETTING_STARTED">Getting Started with the SOMA Toolbox</tocitem>
+        <tocitem target="index.html#functions" image="HelpIcon.FUNCTION">Functions
+            <tocitem target="somamin.html">somamin</tocitem>
+            <tocitem target="somaoptions.html">somaoptions</tocitem>
+            <tocitem target="somaplotbestf.html">somaplotbestf</tocitem>
+        </tocitem>
+        <tocitem target="index.html#examples" image="HelpIcon.EXAMPLES">Examples
+            <tocitem target="Example_PID_Tuning.html">PID controller tuning</tocitem>
+            <tocitem target="Example_PressureVessel.html">Pressure vessel design (constrained)</tocitem>
+            <tocitem target="Example_CEC_Adapter.html">Using CEC benchmark suites</tocitem>
+        </tocitem>
+    </tocitem>
+</toc>
