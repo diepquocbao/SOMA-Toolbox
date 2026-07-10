@@ -1,0 +1,15 @@
+variant,problem,tScalar_s,tVectorized_s,speedup,fvalScalar,fvalVectorized
+AllToOne,sphere,0.125,0.036,3.46,1.587567e-06,1.587567e-06
+AllToOne,rastrigin,0.138,0.058,2.38,9.129286e-05,9.129286e-05
+AllToAll,sphere,0.111,0.032,3.45,3.343330e-10,3.343330e-10
+AllToAll,rastrigin,0.132,0.066,1.99,3.022217e-08,3.022217e-08
+AllToAllAdaptive,sphere,0.114,0.033,3.43,8.453568e-07,8.453568e-07
+AllToAllAdaptive,rastrigin,0.137,0.079,1.74,2.985287e+00,2.985287e+00
+AllToRand,sphere,0.142,0.033,4.33,1.724684e-10,1.724684e-10
+AllToRand,rastrigin,0.151,0.083,1.83,3.882364e-08,3.882364e-08
+T3A,sphere,0.145,0.037,3.90,8.521657e-16,8.521657e-16
+T3A,rastrigin,0.170,0.079,2.14,9.949591e+00,9.949591e+00
+Pareto,sphere,0.243,0.144,1.69,6.493362e-32,6.493362e-32
+Pareto,rastrigin,0.265,0.270,0.98,1.293447e+01,1.293447e+01
+iSOMA,sphere,0.741,0.442,1.68,8.700924e-21,8.700924e-21
+iSOMA,rastrigin,0.772,0.460,1.68,1.392942e+01,1.392942e+01

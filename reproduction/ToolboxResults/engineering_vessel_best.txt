@@ -1,0 +1,4 @@
+variant=Pareto
+Ts=0.7809 Th=0.3897 R=40.4497 L=198.1988
+trueCost=5902.7950
+constraints g=[-0.0002626 -0.003854 -11.19 -41.8] feasible=1

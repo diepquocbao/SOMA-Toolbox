@@ -43,6 +43,13 @@ Manager, or run `examples/GettingStarted.m`.
 | `Pareto` | Q. B. Diep, I. Zelinka, S. Das, "Self-Organizing Migrating Algorithm Pareto", *MENDEL* 25(1):111–120, 2019. [doi:10.13164/mendel.2019.1.111](https://doi.org/10.13164/mendel.2019.1.111) |
 | `iSOMA` | Q. B. Diep, T. C. Truong, S. Das, I. Zelinka, "Self-Organizing Migrating Algorithm with narrowing search space strategy for robot path planning", *Applied Soft Computing* 116:108270, 2022. [doi:10.1016/j.asoc.2021.108270](https://doi.org/10.1016/j.asoc.2021.108270) |
 
+## Reproducing published results
+
+The toolbox is validated by reproducing the published CEC 2017 results of five
+variants (141 of 145 function–variant cells). The full study — published
+reference numbers, measured results, per-function statistical comparison, and
+the scripts that regenerate them — is in [reproduction/](reproduction/).
+
 ## License and citation
 
 Released under the MIT license (see [LICENSE](LICENSE)). If you use
