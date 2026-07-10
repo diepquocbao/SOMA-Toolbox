@@ -2,7 +2,9 @@
 
 All notable changes to the SOMA Toolbox are recorded here.
 
-## [Unreleased]
+## [1.0.0] — 2026-07-10
+
+First public release.
 
 ### Added
 - Unified interface `somamin(fun, nvars, lb, ub, options)` with the
@@ -20,6 +22,9 @@ All notable changes to the SOMA Toolbox are recorded here.
   browser, and three worked examples: a basic tour, PID controller tuning,
   and constrained pressure-vessel design.
 - Automated test suite covering the public interface and every variant.
+- `reproduction/` folder with the published baselines, measured results, and
+  the scripts that regenerate the reproduction study (141 of 145 published
+  CEC 2017 function–variant cells recovered across five variants).
 
 ### Notes
 - The entry point is named `somamin` rather than `soma` because MATLAB ships
