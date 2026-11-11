@@ -1,19 +1,21 @@
 function [x, fval, exitflag, mig, FEs, history, message] = soma_alltoalladaptive(evalPop, pop, fit, FEs, lb, ub, cfg)
-%SOMA_ALLTOALLADAPTIVE SOMA AllToAll with adaptive perturbation.
-%   Same all-to-all topology and immediate (asynchronous) update as
-%   soma_alltoall, but the PRT perturbation probability ADAPTS with the
-%   consumed evaluation budget using the SOMA T3A schedule
-%       PRT = 0.05 + 0.90 * FEs/MaxFEs
-%   so the search explores broadly early (low PRT) and focuses later (high
-%   PRT). This is the SOMA sense of "adaptive": adaptive control parameters
-%   (as in T3A), reusing that published schedule rather than a fixed PRT.
+%SOMA_ALLTOALLADAPTIVE Classical SOMA AllToAll Adaptive migration strategy.
+%   Every migration, EVERY individual travels toward EVERY other individual.
+%   A new journey does not begin from the same old position (as in AllToAll)
+%   but from the best position found so far: as soon as a journey improves
+%   the individual, it moves there, and its next journey starts from the
+%   updated position. Each journey jumps toward the target in steps of Step
+%   up to PathLength, perturbed dimension-wise by the PRT vector.
 %
-%   Provided as a classical strategy; there is no separate published
-%   reproduction target for this variant (the papers baseline AllToOne and
-%   AllToAll). See DEVIATIONS.md.
+%   Strategy definition: I. Zelinka, "SOMA - Self-organizing Migrating
+%   Algorithm", in Self-Organizing Migrating Algorithm: Methodology and
+%   Implementation, Springer, 2016, Sec. 5 (strategy "AllToAll Adaptive").
+%   This is the strategy behind the baseline labelled "SOMA AllToAll" in the
+%   published SOMA T3A, SOMA Pareto and iSOMA comparisons (see DEVIATIONS.md).
 
 PathLength = cfg.params.PathLength;
 Step = cfg.params.Step;
+PRT = cfg.params.PRT;
 
 steps = (0:Step:PathLength).';
 nJump = numel(steps);
@@ -44,7 +46,6 @@ while isempty(exitflag)
 
     mig = mig + 1;
     fvalBefore = fval;
-    PRT = 0.05 + 0.90 * (FEs / cfg.MaxFunctionEvaluations);   % adaptive (T3A schedule)
     outOfBudget = false;
 
     for j = 1:NP
@@ -56,8 +57,8 @@ while isempty(exitflag)
                 outOfBudget = true;
                 break
             end
-            startPos = pop(j, :);
-            target = pop(i, :);
+            startPos = pop(j, :);          % adaptive: best position found so far
+            target = pop(i, :);            % current position of the target
             PRTVector = rand(nJump, D) < PRT;
             path = startPos + (target - startPos) .* steps .* PRTVector;
             path = somaApplyBoundary(path, lb, ub, cfg.BoundaryHandling);

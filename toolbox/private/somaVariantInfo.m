@@ -39,14 +39,14 @@ switch key
         info.defaultPopulationSize = 20;
         info.params = struct('PathLength', 3.0, 'Step', 0.11, 'PRT', 0.1);
         info.minPopulationSize = 2;
-        info.reference = "Zelinka (2004), New Optimization Techniques in Engineering, Springer, pp. 167-217.";
+        info.reference = "Zelinka (2004), New Optimization Techniques in Engineering, Springer, pp. 167-217; strategy definition: Zelinka (2016), in Self-Organizing Migrating Algorithm: Methodology and Implementation, Springer, Sec. 5.";
     case 'alltoalladaptive'
         info.name = "AllToAllAdaptive";
         info.impl = @soma_alltoalladaptive;
         info.defaultPopulationSize = 20;
         info.params = struct('PathLength', 3.0, 'Step', 0.11, 'PRT', 0.1);
         info.minPopulationSize = 2;
-        info.reference = "Zelinka (2004), New Optimization Techniques in Engineering, Springer, pp. 167-217.";
+        info.reference = "Zelinka (2004), New Optimization Techniques in Engineering, Springer, pp. 167-217; strategy definition: Zelinka (2016), in Self-Organizing Migrating Algorithm: Methodology and Implementation, Springer, Sec. 5. Settings: Diep et al. (2019), MENDEL 25(1):111-120, Sec. 4.";
     case 'alltorand'
         info.name = "AllToRand";
         info.impl = @soma_alltorand;

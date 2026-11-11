@@ -1,0 +1,4 @@
+variant,cells,within1sd,zNotRejected,equivalent,rankSumNotRejectedHolm,effectAtMostSmall,medianRelErrPct
+AllToAll,29,29,25,29,29,29,3.63080437259384
+AllToAllAdaptive,29,29,27,29,29,29,3.58390799079293
+AllToRand,29,29,28,28,29,29,3.5864391388912

@@ -1,5 +1,0 @@
-variant=Pareto
-Kp=20.0000 Ki=2.9659 Kd=6.6916
-ITAE=0.0976
-tuned:   overshoot=2.72% settling2pct=1.28s ssErr=-1.267e-11
-baseline Kp2: overshoot=22.26% settling2pct=40.00s ssErr=0.3456 ITAE=267.2404

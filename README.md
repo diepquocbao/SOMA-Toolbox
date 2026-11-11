@@ -38,7 +38,7 @@ Manager, or run `examples/GettingStarted.m`.
 
 | Variant (options.Variant) | Reference |
 |---|---|
-| `AllToOne`, `AllToAll`, `AllToAllAdaptive`, `AllToRand` | I. Zelinka, "SOMA — Self-Organizing Migrating Algorithm", in *New Optimization Techniques in Engineering*, Springer, 2004, pp. 167–217. [doi:10.1007/978-3-540-39930-8_7](https://doi.org/10.1007/978-3-540-39930-8_7) |
+| `AllToOne`, `AllToAll`, `AllToAllAdaptive`, `AllToRand` | I. Zelinka, "SOMA — Self-Organizing Migrating Algorithm", in *New Optimization Techniques in Engineering*, Springer, 2004, pp. 167–217. [doi:10.1007/978-3-540-39930-8_7](https://doi.org/10.1007/978-3-540-39930-8_7). Strategy definitions as in D. Davendra and I. Zelinka (eds.), *Self-Organizing Migrating Algorithm: Methodology and Implementation*, Springer, 2016, Sec. 5. |
 | `T3A` | Q. B. Diep, "Self-Organizing Migrating Algorithm Team To Team Adaptive — SOMA T3A", *IEEE CEC 2019*, pp. 1182–1187. [doi:10.1109/CEC.2019.8790202](https://doi.org/10.1109/CEC.2019.8790202) |
 | `Pareto` | Q. B. Diep, I. Zelinka, S. Das, "Self-Organizing Migrating Algorithm Pareto", *MENDEL* 25(1):111–120, 2019. [doi:10.13164/mendel.2019.1.111](https://doi.org/10.13164/mendel.2019.1.111) |
 | `iSOMA` | Q. B. Diep, T. C. Truong, S. Das, I. Zelinka, "Self-Organizing Migrating Algorithm with narrowing search space strategy for robot path planning", *Applied Soft Computing* 116:108270, 2022. [doi:10.1016/j.asoc.2021.108270](https://doi.org/10.1016/j.asoc.2021.108270) |
@@ -46,9 +46,14 @@ Manager, or run `examples/GettingStarted.m`.
 ## Reproducing published results
 
 The toolbox is validated by reproducing the published CEC 2017 results of five
-variants (141 of 145 function–variant cells). The full study — published
-reference numbers, measured results, per-function statistical comparison, and
-the scripts that regenerate them — is in [reproduction/](reproduction/).
+variants: in version 1.1.0 the mean lies within one published standard
+deviation in 142 of 145 function–variant cells, and a test of equivalence
+passes in 139. The classical strategies are also compared with their 2005
+MATLAB reference code (within one standard deviation in all 87 cells), and
+conformance tests check them against their definitions. The scripts, the
+per-run results and the published baselines of this study are in
+[reproduction/](reproduction/); see
+[CHANGELOG.md](CHANGELOG.md) for the changes since version 1.0.0.
 
 ## License and citation
 

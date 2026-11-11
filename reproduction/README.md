@@ -1,70 +1,72 @@
-# Reproduction study — data and scripts
+# Reproduction study — version 1.1.0
 
-This folder contains the data and scripts behind the validation section of the
-SOMA Toolbox paper: the reproduction of published CEC 2017 results for five
-variants, the two engineering examples, and the vectorization timing study.
-Every number reported in the paper's tables can be regenerated from here.
+This folder holds the code and the per-run results behind the validation of the
+toolbox: the reproduction of published CEC 2017 results, the comparison with
+the 2005 reference code of the classical strategies, the timing study, and the
+two engineering examples. Every statistic reported for version 1.1.0 can be
+recomputed from here. The study of version 1.0.0 is kept in the `v1.0.0`
+release.
 
-## Layout
+## Contents
 
-| Folder | Contents |
+| Folder | Content |
 |---|---|
-| `benchmarks/` | The harness: runner scripts, comparison script, CEC dispatchers. |
-| `PublishedResults/` | Published reference numbers. `published_CEC2017_D30_all.csv` holds mean and standard deviation for AllToOne, AllToAll, Pareto, T3A, and iSOMA on CEC 2017 (D = 30, 51 runs), transcribed from Table 6 of Diep et al., *Applied Soft Computing* 116 (2022) 108270. |
-| `ToolboxResults/` | Measured results. `toolbox_CEC2017_D30_51runs.csv` (raw toolbox runs), `comparison_CEC2017_D30.csv` (per-function comparison: means, standard deviations, z-statistic, p-value, reproduction verdict), `pareto_binary_CEC2017_D30.csv` (PRTVectorMode probe), `vectorized_speedup.csv`, `engineering_pid.csv` / `engineering_vessel.csv` (+ best designs), and `convergence_CEC2017_D30.mat` (median convergence curves). |
+| `experiments/` | `run_cec2017.m` (CEC 2017 study), `pareto_cosine.m` (Pareto with the cosine schedules printed in its article), `ref2005_run.m` and `ref2005_objective.m` (driver for the 2005 reference files), `cec_eval.m` and `cec_meta.m` (CEC dispatchers), `run_engineering.m` (PID and pressure-vessel examples), `run_speedup.m` (timing study) |
+| `analysis/` | `run_statistics.m` and its helpers: `compareSamples.m` (one-standard-deviation check, two-sample z-test, two one-sided tests), `rsTest.m` (Wilcoxon rank-sum test and Vargha-Delaney A), `holm.m` (Holm adjustment) |
+| `results/cec2017/` | per-run errors f(x) - f* on CEC 2017, n = 30, 3e5 evaluations; rows F1, F3-F30, columns runs with seeds 1-51. One file per variant of the toolbox, `Pareto_cosine.csv`, and `ref_*.csv` for the 2005 reference files |
+| `results/engineering/` | every run of the PID and pressure-vessel examples (objective value, design, constraint values) and the run of the listed PID code |
+| `results/speedup/` | every timing of the vectorization study and the description of the machine |
+| `results/statistics/` | output of `run_statistics.m` |
+| `published/` | published results used for comparison: means and standard deviations of Table 6 of Diep et al. (2022), and the per-run errors behind that table for AllToOne, AllToAllAdaptive (labelled SOMA AllToAll there), Pareto and T3A |
 
-## Reproduction protocol
+## Requirements
 
-CEC 2017 functions F1 and F3–F30 (F2 was withdrawn by the organizers),
-dimension 30, MaxFEs = 1e4 x 30, 51 independent runs per function (seeds 1–51),
-errors below 1e-8 recorded as zero. Each variant runs through the public
-`somamin` interface with its published default parameters. A function counts as
-reproduced if a two-sample z-test computed from the published and measured
-summary statistics does not reject equality of means at the 5% level, or if the
-measured mean lies within one published standard deviation of the reported
-mean.
+MATLAB R2021a or later; no additional toolbox. The results were produced with
+MATLAB R2025b on Windows 11.
 
-## The CEC 2017 suite is not redistributed
+## Recomputing the statistics
 
-The IEEE CEC test functions are distributed by the competition organizers
-(P. N. Suganthan et al.) under their own terms and are deliberately not bundled
-here — the toolbox itself depends on base MATLAB only. To rerun the study,
-obtain the official CEC 2017 MATLAB package and arrange it as:
-
-```
-<cecRoot>/
-  CEC2017/
-    cec17_func.mex*      % compiled for your platform
-    input_data/          % shift/rotation data from the official package
-```
-
-The thin dispatchers `cec_eval.m` / `cec_meta.m` in `benchmarks/` connect the
-suite to `somamin` (the CEC MEX uses column individuals; `somamin` uses row
-individuals — the adapter transposes).
-
-## Regenerating the paper's numbers
+From this folder, in MATLAB:
 
 ```matlab
-cd reproduction/benchmarks
-
-% Table "Reproduction of published CEC 2017 results" (~ days of CPU; resumable)
-runFullReproCEC17('<cecRoot>');        % writes ../ToolboxResults/toolbox_CEC2017_D30_51runs.csv
-compareToPublished();                  % writes ../ToolboxResults/comparison_CEC2017_D30.csv
-
-% PRTVectorMode probe on the four outlying Pareto cells (resumable)
-runParetoBinary('<cecRoot>');
-
-% Convergence figure data (median of 15 runs on F1, F7, F16)
-generateConvergenceFig([], [], '<cecRoot>');
-
-% Engineering examples (PID + pressure vessel) — base MATLAB only, minutes
-runEngineeringExamples();
-
-% Vectorized-vs-scalar timing table — base MATLAB only, run on an idle machine
-measureVectorizedSpeedup();
+addpath('analysis'); run_statistics
 ```
 
-`compareToPublished`, `runEngineeringExamples`, and `measureVectorizedSpeedup`
-need no CEC installation. All long CEC runs append one row per
-(variant, function) as they go and skip rows already present, so they can be
-interrupted and relaunched safely.
+| Statistic | File in `results/statistics/` |
+|---|---|
+| Vectorization speed-up | `speedup_summary.csv` |
+| Toolbox against published results | `repro_summary.csv`, per function `repro_comparison.csv` |
+| Toolbox against the 2005 reference code | `crosscheck_summary.csv`, per function `crosscheck_comparison.csv` |
+| Pareto: linear against cosine schedules | `pareto_schedules.csv` |
+| Engineering examples | `engineering_summary.csv`, `results/engineering/pid_listing.csv` |
+
+## Re-running the experiments
+
+The scripts add the `toolbox` folder of this repository to the MATLAB path. All
+runs are seeded; for the same seed and MATLAB version the toolbox gives
+bit-identical runs.
+
+- CEC 2017: `run_cec2017(cecRoot, outDir)`, where `cecRoot` holds the compiled
+  CEC 2017 function `cec17_func` and its `input_data` folder, distributed by the
+  organizers of the competition (not included). A subset can be run, for
+  example `run_cec2017(cecRoot, outDir, {'Pareto'}, [5 7])`.
+- 2005 reference code: the configurations `ref_*` call the MATLAB files
+  `soma_all_to_all.m`, `soma_all_to_all_adaptive.m` and
+  `soma_all_to_one_randomly.m` of the classical strategies, distributed from the
+  SOMA home page. They carry no licence statement and are not included; place
+  them on the MATLAB path. SHA-256 of the files used:
+  - `soma_all_to_all.m` a844d5e8879548618d579b9843d04c21f6f1fc751cdfa55e0c131652bb4a298b
+  - `soma_all_to_all_adaptive.m` 1b0fccde14a387d46c746468da6e55670828143a2c9a8858d88c8f4e057f698f
+  - `soma_all_to_one_randomly.m` 975731203bcebf8d66facc6efc88ad1d320d32ab722e6202ce87248c1aa13202
+- Engineering examples: `run_engineering(outDir)`.
+- Timing: `run_speedup(outDir)`, on an otherwise idle machine.
+
+## Licence
+
+MIT, as the rest of the repository (see [LICENSE](../LICENSE)).
+
+## Reference
+
+Diep, Q.B., Truong, T.C., Das, S. and Zelinka, I. (2022), "Self-organizing
+migrating algorithm with narrowing search space strategy for robot path
+planning", Applied Soft Computing, Vol. 116, p. 108270.

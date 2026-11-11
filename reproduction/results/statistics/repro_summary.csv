@@ -1,0 +1,6 @@
+variant,cells,within1sd,zNotRejected,equivalent,rankSumNotRejectedHolm,effectAtMostSmall,medianRelErrPct
+AllToOne,29,28,27,27,29,29,4.12937852150906
+AllToAllAdaptive,29,29,27,27,29,28,3.23456312031844
+Pareto,29,28,27,28,28,28,4.78244467713407
+T3A,29,28,28,28,29,29,4.5729012712234
+iSOMA,29,29,28,29,NaN,NaN,3.27623906137926

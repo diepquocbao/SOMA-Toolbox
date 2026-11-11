@@ -1,0 +1,6 @@
+CPU: 13th Gen Intel(R) Core(TM) i7-13700KF
+RAM_GB: 64
+OS: Microsoft Windows 11 Pro
+MATLAB: 25.2.0.3177638 (R2025b) Update 5
+maxNumCompThreads: 8
+repetitions: 21

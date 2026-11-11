@@ -1,15 +1,17 @@
 function [x, fval, exitflag, mig, FEs, history, message] = soma_alltoall(evalPop, pop, fit, FEs, lb, ub, cfg)
 %SOMA_ALLTOALL Classical SOMA AllToAll migration strategy.
-%   Every migration, EVERY individual travels toward EVERY other individual.
-%   Positions are updated immediately (asynchronously): as soon as an
-%   individual's journey toward a target improves it, it moves, and its next
-%   journey (and other individuals' journeys) use the updated position. Each
-%   journey jumps from the individual's current position toward the target in
-%   steps of Step up to PathLength, perturbed dimension-wise by the PRT vector.
+%   There is no Leader: every migration, EVERY individual travels toward
+%   EVERY other individual. All journeys of an individual within one
+%   migration start from the same position (the one it held when its turn
+%   began); after the last journey the individual takes the best position
+%   found on any of them. Each journey jumps toward the target in steps of
+%   Step up to PathLength, perturbed dimension-wise by the PRT vector.
 %
-%   Implemented from the strategy description in Zelinka (2004). The immediate
-%   (asynchronous) update reproduces the published SOMA-AllToAll baseline; the
-%   synchronous/deferred reading does not (see DEVIATIONS.md).
+%   Strategy definition: I. Zelinka, "SOMA - Self-organizing Migrating
+%   Algorithm", in Self-Organizing Migrating Algorithm: Methodology and
+%   Implementation, Springer, 2016, Sec. 5 (strategy "AllToAll"). The
+%   variant in which each journey starts from the best position found so
+%   far is AllToAllAdaptive (see soma_alltoalladaptive).
 
 PathLength = cfg.params.PathLength;
 Step = cfg.params.Step;
@@ -47,6 +49,9 @@ while isempty(exitflag)
     outOfBudget = false;
 
     for j = 1:NP
+        startPos = pop(j, :);              % same start position for every journey
+        bestPos = startPos;
+        bestCost = fit(j);
         for i = 1:NP
             if i == j
                 continue
@@ -55,22 +60,23 @@ while isempty(exitflag)
                 outOfBudget = true;
                 break
             end
-            startPos = pop(j, :);          % immediate: current position
-            target = pop(i, :);            % immediate: current population
+            target = pop(i, :);            % current position of the target
             PRTVector = rand(nJump, D) < PRT;
             path = startPos + (target - startPos) .* steps .* PRTVector;
             path = somaApplyBoundary(path, lb, ub, cfg.BoundaryHandling);
             cost = evalPop(path);
             FEs = FEs + nJump;
             [minCost, idz] = min(cost);
-            if minCost <= fit(j)
-                pop(j, :) = path(idz, :);
-                fit(j) = minCost;
-                if minCost < fval
-                    fval = minCost;
-                    x = path(idz, :);
-                end
+            if minCost <= bestCost
+                bestCost = minCost;
+                bestPos = path(idz, :);
             end
+        end
+        pop(j, :) = bestPos;               % best position over all journeys
+        fit(j) = bestCost;
+        if bestCost < fval
+            fval = bestCost;
+            x = bestPos;
         end
         if outOfBudget
             break

@@ -51,29 +51,49 @@ please open an issue.
 
 ## AllToAll, AllToAllAdaptive, AllToRand
 
-8. **Implemented from the strategy descriptions** in Zelinka (2004); no
-   reference code exists for these three classical variants.
-   - **AllToAll** uses immediate (asynchronous) position updates: an
-     individual moves as soon as a journey improves it, and later journeys use
-     the updated positions. This reproduces the published SOMA-AllToAll
-     baseline on the CEC2017 suite closely, whereas a synchronous (deferred)
-     reading does not.
-   - **AllToAllAdaptive** is the AllToAll topology with an adaptive PRT
-     schedule (`PRT = 0.05 + 0.90 * FEs/MaxFEs`, as in T3A). "Adaptive" refers
-     to adaptive control parameters.
-   - **AllToRand** has each individual migrate toward one randomly chosen other
-     individual per migration, with immediate updates.
+8. **Strategy definitions and reference code.** The three strategies follow
+   the definitions of Zelinka in *Self-Organizing Migrating Algorithm:
+   Methodology and Implementation* (Springer, 2016), Section 5, and agree
+   statistically with the MATLAB reference files of the classical strategies
+   distributed from the SOMA home page (`soma_all_to_all.m`,
+   `soma_all_to_all_adaptive.m`, `soma_all_to_one_randomly.m`, October 2005)
+   on the CEC2017 suite (D = 30, 51 runs).
+   - **AllToAll**: every individual travels toward every other individual, and
+     all its journeys within a migration start from the same position; it then
+     takes the best position found on any journey.
+   - **AllToAllAdaptive**: the same topology, but each journey starts from the
+     best position found so far. This is the strategy behind the baseline
+     labelled "SOMA AllToAll" in the published SOMA T3A, SOMA Pareto and iSOMA
+     comparisons. *Version 1.0.0 shipped this strategy under the name
+     AllToAll, and its AllToAllAdaptive used an adaptive PRT schedule that has
+     no source; version 1.1.0 corrects both.*
+   - **AllToRand**: every individual travels toward one randomly chosen other
+     individual per migration.
 
-   The jump sequence is `t = 0:Step:PathLength`, consistent with AllToOne.
+   Differences from the 2005 reference files, none of which changes results
+   statistically: the reference code redraws a PRT vector that has no active
+   coordinate; its all-to-all target loop visits one individual twice and skips
+   another; its random target is not exactly uniform (the last individual has
+   half the probability of the others). The jump sequence is
+   `t = 0:Step:PathLength`, consistent with AllToOne.
 
 ## Pareto and iSOMA
 
 9. **The soft (adaptive) PRT vector is the default.** Both papers present it
-   as part of the proposed algorithm (Pareto Eq. 6; iSOMA Eq. 4). The
-   `PRTVectorMode` option ("adaptive" or "binary") exposes both behaviors.
-   The exact form was resolved against the published tables (CEC2017, D = 30,
-   51 runs): the adaptive vector reproduces the published means well, and is
-   kept as the default for consistency with the papers.
+   as part of the proposed algorithm (Pareto Eq. 6; iSOMA Eq. 4), and the code
+   that produced their published tables uses it; the later public releases of
+   the code disable it. The `PRTVectorMode` option ("adaptive" or "binary")
+   exposes both behaviors.
+
+13. **Pareto follows the code that produced its published tables.** The Pareto
+    paper prints cosine schedules, `PRT = 0.50 + 0.45*cos(pi*t + pi)` and
+    `Step = 0.35 + 0.15*cos(pi*t)` with `t = FEs/MaxFEs` (Eqs. 4-5). The 2019
+    code of its CEC2017 experiments uses linear schedules with the same end
+    values, `PRT = 0.05 + 0.90*t` and `Step = 0.50 - 0.30*t`, and accepts a new
+    position only if it is strictly better. Only the code values reproduce the
+    published results (within one published standard deviation on 28 of 29
+    functions, against 23 for the cosine forms). *Version 1.0.0 used the cosine
+    forms; version 1.1.0 uses the linear ones.*
 
 10. **iSOMA follows the reference code where it differs from the paper.** The
     published iSOMA results were produced by the reference implementation,

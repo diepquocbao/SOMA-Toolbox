@@ -9,7 +9,7 @@ function packageToolbox(versionStr)
 %   examples); tests/, benchmarks/, and development docs are excluded.
 
 if nargin < 1
-    versionStr = '1.0.0';
+    versionStr = '1.1.0';
 end
 
 here = fileparts(mfilename('fullpath'));

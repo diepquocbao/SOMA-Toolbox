@@ -17,7 +17,7 @@ nvars = 4;
 lb = [0.0625, 0.0625,  10,  10];
 ub = [6.1875, 6.1875, 200, 200];
 
-penalty = 1e7;                        % static penalty weight
+penalty = 1e9;                        % static penalty weight
 objective = @(x) pressureVesselCost(x, penalty);
 
 %% Optimize

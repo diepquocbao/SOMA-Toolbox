@@ -4,14 +4,16 @@ function [x, fval, exitflag, mig, FEs, history, message] = soma_pareto(evalPop, 
 %   the Organization process: the Leader is drawn from the best C = 4% of the
 %   population and the Migrant from the band between A = 20% and A+D = 36%.
 %   The Migrant jumps NJump times toward the Leader. Control parameters adapt
-%   with the consumed budget (paper Eq. 4-6, with T1 = T2 = 1):
-%       PRT  = 0.50 + 0.45*cos(pi*FEs/MaxFEs + pi)
-%       Step = 0.35 + 0.15*cos(pi*FEs/MaxFEs)
+%   with the consumed budget:
+%       PRT  = 0.05 + 0.90*FEs/MaxFEs
+%       Step = 0.50 - 0.30*FEs/MaxFEs
 %       PRTVector_j = 1 if rand_j < PRT, else FEs/MaxFEs   (soft PRT vector)
 %
-%   Port of the author's 2020 reference implementation (Quoc Bao Diep),
-%   transposed to row-individuals. The soft PRT vector of paper Eq. 6 is
-%   enabled by default; see DEVIATIONS.md.
+%   Port of the reference implementation that produced the tables of the
+%   SOMA Pareto paper (2019 release), transposed to row-individuals. The
+%   paper prints cosine forms of the two schedules with the same end
+%   values; the published results come from the linear forms used here
+%   (see DEVIATIONS.md). The soft PRT vector of paper Eq. 6 is the default.
 %   Reference:
 %     Q. B. Diep, I. Zelinka, S. Das, "Self-Organizing Migrating Algorithm
 %     Pareto", MENDEL 25(1):111-120, 2019. DOI 10.13164/mendel.2019.1.111.
@@ -51,10 +53,10 @@ while isempty(exitflag)
     mig = mig + 1;
     fvalBefore = fval;
 
-    % Adaptive control parameters (paper Eq. 4-5 with T1 = T2 = 1).
+    % Adaptive control parameters (linear schedules of the reference code).
     t = FEs / cfg.MaxFunctionEvaluations;
-    PRT  = 0.50 + 0.45 * cos(pi * t + pi);
-    Step = 0.35 + 0.15 * cos(pi * t);
+    PRT  = 0.05 + 0.90 * t;
+    Step = 0.50 - 0.30 * t;
     steps = (1:NJump).' * Step;
 
     % Organization: sort, then pick Leader and Migrant by the Pareto rule.
@@ -75,12 +77,12 @@ while isempty(exitflag)
     cost = evalPop(path);
     FEs = FEs + NJump;
 
-    % Update: accept the best jump if it does not worsen the Migrant.
+    % Update: accept the best jump if it improves the Migrant.
     [minCost, idz] = min(cost);
-    if minCost <= fit(idMigrant)
+    if minCost < fit(idMigrant)
         pop(idMigrant, :) = path(idz, :);
         fit(idMigrant) = minCost;
-        if minCost <= fval
+        if minCost < fval
             fval = minCost;
             x = path(idz, :);
         end

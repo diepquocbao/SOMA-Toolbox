@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>Engineering example: pressure vessel design with SOMA</title>
 <meta name="generator" content="MATLAB 25.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-07-08">
+<meta name="DC.date" content="2026-11-11">
 <meta name="DC.source" content="Example_PressureVessel.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -104,7 +104,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 lb = [0.0625, 0.0625,  10,  10];
 ub = [6.1875, 6.1875, 200, 200];
 
-penalty = 1e7;                        <span class="comment">% static penalty weight</span>
+penalty = 1e9;                        <span class="comment">% static penalty weight</span>
 objective = @(x) pressureVesselCost(x, penalty);
 </pre>
 <h2 id="2">Optimize</h2>
@@ -146,13 +146,13 @@ fprintf(<span class="string">'  Ts = %.4f, Th = %.4f -&gt; cost = %.2f, feasible
 </pre>
 <pre class="codeoutput">
 Best design:
-  Ts = 0.8388 in, Th = 0.4161 in, R = 43.4835 in, L = 160.1986 in
-  Fabrication cost = 5999.71
-  Constraints g1..g4 (feasible if &lt;= 0): [0.0003964;-0.00125;-5.815;-79.8]
-  Feasible: 0
+  Ts = 0.8307 in, Th = 0.4106 in, R = 43.0373 in, L = 165.3465 in
+  Fabrication cost = 5981.91
+  Constraints g1..g4 (feasible if &lt;= 0): [-5.762e-05;-6.497e-05;-35.08;-74.65]
+  Feasible: 1
 
 With plate thicknesses rounded to 0.0625" multiples:
-  Ts = 0.8125, Th = 0.4375 -&gt; cost = 5897.96, feasible = 0
+  Ts = 0.8125, Th = 0.4375 -&gt; cost = 5948.73, feasible = 0
 </pre>
 <h2 id="4">------------------------------------------------------------------------</h2>
 <p>Local functions -------------------------------------------------------------------------</p>
@@ -175,7 +175,7 @@ g = [ <span class="keyword">...</span>
      L - 240];
 <span class="keyword">end</span>
 </pre>
-<pre class="codeoutput">Penalized cost over 10 runs: best = 6001.28, mean = 6176.82, std = 126.62
+<pre class="codeoutput">Penalized cost over 10 runs: best = 5981.91, mean = 6145.96, std = 151.61
 </pre>
 <p class="footer">
 <br>
@@ -204,7 +204,7 @@ nvars = 4;
 lb = [0.0625, 0.0625,  10,  10];
 ub = [6.1875, 6.1875, 200, 200];
 
-penalty = 1e7;                        % static penalty weight
+penalty = 1e9;                        % static penalty weight
 objective = @(x) pressureVesselCost(x, penalty);
 
 %% Optimize

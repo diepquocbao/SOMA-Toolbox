@@ -9,7 +9,7 @@ To make changes, update the MATLAB code and republish this document.
 <title>Getting Started with the SOMA Toolbox</title>
 <meta name="generator" content="MATLAB 25.2">
 <link rel="schema.DC" href="http://purl.org/dc/elements/1.1/">
-<meta name="DC.date" content="2026-07-08">
+<meta name="DC.date" content="2026-11-11">
 <meta name="DC.source" content="GettingStarted.m">
 <style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
@@ -121,7 +121,7 @@ fprintf(<span class="string">'Best point found (first 3 coords): [%.3g %.3g %.3g
 <pre class="codeoutput">soma (AllToOne): Maximum number of function evaluations reached. Migrations: 62, function evaluations: 49982, best f(x): 3.34366e-17
 Best point found (first 3 coords): [-4.4e-10 -1.81e-09 -1.27e-09 ...]
 </pre>
-<img vspace="5" hspace="5" src="GettingStarted_01.png" alt=""> <h2 id="2">2. Getting more information back</h2>
+<h2 id="2">2. Getting more information back</h2>
 <p>soma follows the Global Optimization Toolbox calling convention: [x, fval, exitflag, output] = somamin(...)</p>
 <pre class="codeinput">[x, fval, exitflag, output] = somamin(fun, nvars, lb, ub);
 fprintf(<span class="string">'fval = %.4g, exitflag = %d\n'</span>, fval, exitflag);
@@ -333,7 +333,7 @@ T3A best fval = 4.705e-30
 [~, f2] = somamin(fun, nvars, lb, ub, opts);
 fprintf(<span class="string">'Two seeded runs identical: %d (f1=%.6g, f2=%.6g)\n'</span>, isequal(f1, f2), f1, f2);
 </pre>
-<pre class="codeoutput">Two seeded runs identical: 1 (f1=4.11401e-129, f2=4.11401e-129)
+<pre class="codeoutput">Two seeded runs identical: 1 (f1=7.96192e-117, f2=7.96192e-117)
 </pre>
 <h2 id="5">5. Vectorized objectives are much faster</h2>
 <p>If your objective can score a whole population at once (an N-by-nvars matrix returning an N-by-1 column), set UseVectorized = true.</p>
@@ -344,7 +344,7 @@ tic;
 [~, fval] = somamin(funVec, 30, -100, 100, opts);
 fprintf(<span class="string">'iSOMA on 30-D sphere: fval = %.4g (%.2f s)\n'</span>, fval, toc);
 </pre>
-<pre class="codeoutput">iSOMA on 30-D sphere: fval = 6.607e-09 (0.24 s)
+<pre class="codeoutput">iSOMA on 30-D sphere: fval = 6.607e-09 (0.25 s)
 </pre>
 <h2 id="6">6. A harder function: Rastrigin</h2>
 <p>A highly multimodal benchmark. Compare two variants on the same budget.</p>
